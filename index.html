@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WendiGo — Présentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+        #presentation-area {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #0f172a;
+        }
+        .slide-container {
+            position: absolute;
+            inset: 0;
+            color: #f8fafc;
+            display: none;
+            flex-direction: column;
+            padding: 48px 56px;
+            background-color: #0f172a;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+        .slide-container.active { display: flex; opacity: 1; z-index: 10; }
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -40%; left: -30%;
+            width: 80%; height: 80%;
+            background: radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .slide-container > * { position: relative; z-index: 1; }
+
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+        .header-section {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .header-section.contenant { color: #10b981; }
+        .header-section.contenu { color: #38bdf8; }
+        .header-section.ingredients { color: #fbbf24; }
+        .header-section.accueil { color: #a78bfa; }
+        .header-section.fin { color: #94a3b8; }
+        .header-page { color: #64748b; font-size: 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; color: #f8fafc; font-weight: 700; }
+        .slide-title { font-size: 40px; margin-bottom: 8px; line-height: 1.15; }
+        .slide-lead { font-size: 22px; color: #94a3b8; margin-bottom: 28px; max-width: 95%; }
+        p, li { font-size: 21px; line-height: 1.55; color: #cbd5e1; }
+        .content-area { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; }
+
+        .bullet-list ul { list-style: none; }
+        .bullet-list li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 18px;
+        }
+        .bullet-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-size: 26px;
+            line-height: 1.2;
+        }
+        .bullet-list strong { color: #f1f5f9; }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .two-column.align-top { align-items: start; }
+        .image-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #334155;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .image-contain img { object-fit: contain; background: #1e293b; padding: 12px; }
+
+        .tiled-content { display: flex; gap: 24px; width: 100%; }
+        .tile {
+            flex: 1;
+            background: linear-gradient(160deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 28px;
+        }
+        .tile-icon { font-size: 32px; margin-bottom: 14px; }
+        .tile h3 { font-size: 24px; margin-bottom: 10px; }
+        .tile p { font-size: 18px; color: #94a3b8; }
+
+        .slide-container.bleed-image-layout {
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .bleed-text-side {
+            padding: 72px 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 720px;
+        }
+        .bleed-image-side { width: 100%; height: 720px; object-fit: cover; }
+        .title-h1 { font-size: 68px; color: #10b981; margin-bottom: 16px; }
+        .brand-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #10b981;
+            text-decoration: none;
+            line-height: 1.1;
+        }
+        a.brand-title:hover { color: #34d399; }
+        a.brand-title:hover .go-icon { color: #5eead4; }
+        .brand-title .go-icon { color: #00add8; font-size: 1.15em; }
+        .brand-title--hero { font-size: 68px; margin-bottom: 16px; }
+        .brand-title--demo { font-size: 40px; margin: 4px 0 22px; }
+        .title-subtitle { font-size: 26px; color: #cbd5e1; margin-bottom: 36px; }
+        .title-meta { font-size: 19px; color: #94a3b8; margin-bottom: 8px; }
+
+        .quote-layout { text-align: center; max-width: 880px; margin: auto; }
+        .quote-layout blockquote {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 44px;
+            line-height: 1.35;
+            color: #f1f5f9;
+            margin-bottom: 24px;
+        }
+        .quote-layout cite { font-size: 24px; color: #10b981; font-style: normal; }
+
+        /* Diapositive de rupture (acte) */
+        .slide-container.section-break {
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .section-break::before { display: none; }
+        .section-break.contenant { background: linear-gradient(160deg, #052e1f 0%, #0f172a 55%); }
+        .section-break.contenu { background: linear-gradient(160deg, #0c2d4a 0%, #0f172a 55%); }
+        .section-break.ingredients { background: linear-gradient(160deg, #3d2e05 0%, #0f172a 55%); }
+        .act-num {
+            font-size: 15px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            opacity: 0.85;
+        }
+        .section-break h1 {
+            font-size: 58px;
+            margin-bottom: 16px;
+        }
+        .section-break .act-tagline {
+            font-size: 26px;
+            color: #94a3b8;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .section-break.contenant .act-num, .section-break.contenant h1 { color: #34d399; }
+        .section-break.contenu .act-num, .section-break.contenu h1 { color: #38bdf8; }
+        .section-break.ingredients .act-num, .section-break.ingredients h1 { color: #fbbf24; }
+
+        /* Plan */
+        .plan-tile { border-top: 4px solid; padding-top: 20px; }
+        .plan-tile:nth-child(1) { border-color: #10b981; }
+        .plan-tile:nth-child(2) { border-color: #38bdf8; }
+        .plan-tile:nth-child(3) { border-color: #fbbf24; }
+        .plan-time { font-size: 16px; color: #64748b; margin-top: 12px; }
+
+        /* Chaîne de phases */
+        .phase-chain {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .phase-box {
+            flex: 1;
+            text-align: center;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px 10px;
+        }
+        .phase-box i { font-size: 28px; color: #10b981; margin-bottom: 10px; display: block; }
+        .phase-box span { font-size: 17px; font-weight: 600; color: #f1f5f9; display: block; }
+        .phase-arrow { color: #475569; font-size: 20px; flex-shrink: 0; }
+
+        .big-idea {
+            font-size: 32px;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #f1f5f9;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .big-idea em { color: #10b981; font-style: normal; }
+
+        .pill-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+        .pill {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 999px;
+            padding: 12px 22px;
+            font-size: 18px;
+            color: #e2e8f0;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid #334155; font-size: 19px; }
+        th { color: #10b981; font-family: 'Space Grotesk', sans-serif; }
+
+        .code-block {
+            background: #1e293b;
+            padding: 22px;
+            border-radius: 10px;
+            font-family: ui-monospace, monospace;
+            color: #34d399;
+            font-size: 17px;
+            line-height: 1.7;
+            border: 1px solid #334155;
+        }
+
+        .demo-steps {
+            list-style: none;
+            counter-reset: demo;
+        }
+        .demo-steps li {
+            counter-increment: demo;
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 22px;
+            font-size: 24px;
+            color: #f1f5f9;
+        }
+        .demo-steps li::before {
+            content: counter(demo);
+            position: absolute;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            background: #10b981;
+            color: #0f172a;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 2px;
+        }
+
+        .qa-layout { text-align: center; margin: auto; }
+        .qa-layout h2 { font-size: 88px; color: #10b981; margin-bottom: 16px; }
+        .qa-layout p { font-size: 28px; }
+
+        .controls {
+            position: fixed;
+            bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid #334155;
+            z-index: 100;
+        }
+        .control-btn {
+            background: none;
+            border: none;
+            color: #10b981;
+            font-size: 22px;
+            cursor: pointer;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+        .control-btn:hover { background: rgba(16, 185, 129, 0.15); }
+        .control-btn:disabled { color: #475569; cursor: not-allowed; }
+        .slide-counter {
+            color: #f8fafc;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+            min-width: 72px;
+            text-align: center;
+        }
+        #actHint {
+            font-size: 13px;
+            color: #64748b;
+            max-width: 140px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Chronomètre présentation (fixe, hors diapo) */
+        .presentation-timer {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px 8px 14px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            font-family: 'Space Grotesk', sans-serif;
+            user-select: none;
+        }
+        .presentation-timer.running {
+            border-color: #10b981;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35), 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .timer-display {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f8fafc;
+            min-width: 72px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+        }
+        .presentation-timer.running .timer-display { color: #34d399; }
+        .timer-btn {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid #475569;
+            color: #10b981;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .timer-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+        .timer-btn-reset { color: #94a3b8; font-size: 13px; }
+        .timer-btn-reset:hover { color: #f87171; background: rgba(248, 113, 113, 0.12); }
+
+        /* Architecture simplifiée (diapo 16) */
+        .arch-flow {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+        }
+        .arch-node {
+            flex: 1;
+            max-width: 220px;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 14px;
+            padding: 22px 18px;
+            text-align: center;
+        }
+        .arch-node.highlight {
+            border-color: #10b981;
+            background: linear-gradient(160deg, #134e3a 0%, #1e293b 100%);
+            box-shadow: 0 0 24px rgba(16, 185, 129, 0.15);
+        }
+        .arch-node i {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .arch-node h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+        .arch-node p {
+            font-size: 16px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .arch-node .tech-tag {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .arch-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 14px;
+            min-width: 56px;
+            text-align: center;
+            gap: 4px;
+        }
+        .arch-arrow i { font-size: 22px; color: #10b981; }
+        .arch-extras {
+            display: flex;
+            gap: 20px;
+            margin-top: 28px;
+            justify-content: center;
+        }
+        .arch-extra {
+            flex: 1;
+            max-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 14px 18px;
+        }
+        .arch-extra i { font-size: 24px; color: #38bdf8; flex-shrink: 0; }
+        .arch-extra span { font-size: 17px; color: #cbd5e1; }
+        .arch-extra strong { color: #f1f5f9; display: block; font-size: 18px; margin-bottom: 2px; }
+        .arch-message {
+            text-align: center;
+            font-size: 22px;
+            color: #e2e8f0;
+            margin-bottom: 28px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .arch-message em { color: #10b981; font-style: normal; font-weight: 700; }
+
+        /* Backend (diapo 17) */
+        .backend-hero {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 26px;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, rgba(0, 173, 216, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+        }
+        .backend-hero i { font-size: 48px; color: #00add8; }
+        .backend-hero p { font-size: 21px; color: #e2e8f0; margin: 0; line-height: 1.45; }
+        .backend-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+        .backend-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 22px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .backend-card .card-num {
+            font-size: 13px;
+            font-weight: 700;
+            color: #00add8;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .backend-card i { font-size: 30px; color: #10b981; margin-bottom: 12px; }
+        .backend-card h3 { font-size: 20px; margin-bottom: 8px; color: #f1f5f9; }
+        .backend-card p { font-size: 16px; color: #94a3b8; line-height: 1.45; flex: 1; }
+        .backend-card .plain { color: #cbd5e1; font-size: 17px; margin-bottom: 10px; }
+        .backend-card .tech-line {
+            font-size: 14px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            padding-top: 10px;
+            margin-top: 12px;
+        }
+        .backend-card .tech-line code { color: #34d399; font-size: 13px; }
+        .phase-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 22px;
+            justify-content: center;
+        }
+        .phase-chip {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            color: #94a3b8;
+        }
+        .phase-chip.active { border-color: #10b981; color: #34d399; }
+        .phase-strip-label {
+            width: 100%;
+            text-align: center;
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        /* Frontend (diapo 18) — réutilise backend-grid / backend-card */
+        .frontend-hero {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 26px;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, rgba(97, 218, 251, 0.12) 0%, rgba(56, 189, 248, 0.06) 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+        }
+        .frontend-hero i { font-size: 48px; color: #61dafb; }
+        .frontend-hero p { font-size: 21px; color: #e2e8f0; margin: 0; line-height: 1.45; }
+        .frontend-card .card-num { color: #61dafb; }
+        .frontend-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 22px;
+            width: 100%;
+        }
+        .frontend-split-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #1e293b;
+        }
+        .frontend-split-box i { font-size: 28px; flex-shrink: 0; }
+        .frontend-split-box.ui i { color: #61dafb; }
+        .frontend-split-box.world i { color: #10b981; }
+        .frontend-split-box strong { display: block; font-size: 18px; color: #f1f5f9; margin-bottom: 4px; }
+        .frontend-split-box span { font-size: 16px; color: #94a3b8; }
+
+        /* Verdict (diapo 22) */
+        .verdict-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+        .verdict-card {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .verdict-card.positive { border-color: #10b981; }
+        .verdict-card.mixed { border-color: #fbbf24; }
+        .verdict-card.heavy { border-color: #f97316; }
+        .verdict-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .verdict-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .verdict-brand i { font-size: 32px; }
+        .verdict-brand strong { font-size: 22px; color: #f1f5f9; font-family: 'Space Grotesk', sans-serif; }
+        .verdict-badge {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+        .verdict-card.positive .verdict-badge { background: rgba(16,185,129,0.2); color: #34d399; }
+        .verdict-card.mixed .verdict-badge { background: rgba(251,191,36,0.15); color: #fcd34d; }
+        .verdict-card.heavy .verdict-badge { background: rgba(249,115,22,0.15); color: #fb923c; }
+        .verdict-verdict {
+            font-size: 20px;
+            color: #f1f5f9;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+        .verdict-why { font-size: 16px; color: #94a3b8; line-height: 1.45; }
+        .verdict-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 19px;
+            color: #64748b;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .verdict-footer em { color: #10b981; font-style: normal; font-weight: 600; }
+
+        /* Bilan solo (diapo 23) */
+        .solo-takeaway {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+        .solo-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px 24px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+        }
+        .solo-row i {
+            font-size: 28px;
+            color: #10b981;
+            margin-top: 4px;
+            flex-shrink: 0;
+            width: 36px;
+            text-align: center;
+        }
+        .solo-row strong {
+            display: block;
+            font-size: 21px;
+            color: #f1f5f9;
+            margin-bottom: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .solo-row p { font-size: 17px; color: #94a3b8; margin: 0; line-height: 1.45; }
+        .solo-banner {
+            text-align: center;
+            padding: 14px 20px;
+            margin-bottom: 22px;
+            border-radius: 10px;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid #475569;
+            font-size: 20px;
+            color: #cbd5e1;
+        }
+        .solo-banner strong { color: #c4b5fd; }
+
+        /* Sources (diapo 24) — lisibilité renforcée */
+        .slide-container.slide-sources .slide-header { margin-bottom: 14px; padding-bottom: 8px; }
+        .slide-container.slide-sources .slide-title { font-size: 34px; margin-bottom: 6px; color: #f8fafc; }
+        .slide-container.slide-sources .slide-lead { font-size: 18px; margin-bottom: 10px; color: #cbd5e1; }
+        .sources-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+        }
+        .sources-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        .source-group {
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            padding: 14px 14px 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .source-group.wide {
+            border-color: #10b981;
+            background: linear-gradient(180deg, #1a2e28 0%, #1e293b 100%);
+            padding: 14px 18px 16px;
+        }
+        .source-group h3 {
+            font-size: 17px;
+            color: #34d399;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+        .source-group h3 i { font-size: 18px; }
+        .source-entries {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .source-entries.grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 16px;
+        }
+        .source-entry {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid #64748b;
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        .source-entry-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 4px;
+        }
+        .source-entry a {
+            display: block;
+            font-size: 15px;
+            color: #7dd3fc;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .source-entry a:hover { color: #bae6fd; }
+    </style>
+</head>
+<body>
+
+<div id="presentation-area">
+
+    <!-- 1 · Titre -->
+    <div class="slide-container bleed-image-layout active">
+        <div class="bleed-text-side">
+            <h1 class="brand-title brand-title--hero">Wendi<i class="fa-brands fa-golang go-icon" aria-hidden="true"></i></h1>
+            <p class="title-subtitle">Loup-Garou autour de la table — sans Maître du Jeu</p>
+            <p class="title-meta"><i class="fa-solid fa-user" style="color:#10b981;width:28px;"></i> Billy Hallé</p>
+            <p class="title-meta"><i class="fa-solid fa-calendar-day" style="color:#10b981;width:28px;"></i> 05 juin 2026</p>
+            <p class="title-meta"><i class="fa-solid fa-graduation-cap" style="color:#10b981;width:28px;"></i> Innovation et veille technologique</p>
+        </div>
+        <div><img class="bleed-image-side" alt="Wendigo" src="./images/Wendigo.jpg"></div>
+    </div>
+
+    <!-- 2 · Accroche -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section accueil">Accueil</span>
+            <span class="header-page">2 / 25</span>
+        </div>
+        <div class="content-area">
+            <div class="quote-layout">
+                <blockquote>Qui veut être Maître du Jeu un vendredi soir ?</blockquote>
+                <cite>Tout cas, pas moi.</cite>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 · Plan -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section accueil">Accueil</span>
+            <span class="header-page">3 / 25</span>
+        </div>
+        <h2 class="slide-title">Comment je vais vous parler</h2>
+        <p class="slide-lead">D'abord le cadre, ensuite le jeu, enfin la technique — comme une recette.</p>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile plan-tile">
+                    <div class="tile-icon" style="color:#10b981;"><i class="fa-solid fa-bowl-food"></i></div>
+                    <h3>1 · Le contenant</h3>
+                    <p>Pourquoi ce projet ? Quel problème ? Quelle promesse ?</p>
+                    <p class="plan-time">~5 min</p>
+                </div>
+                <div class="tile plan-tile">
+                    <div class="tile-icon" style="color:#38bdf8;"><i class="fa-solid fa-fire"></i></div>
+                    <h3>2 · Le contenu</h3>
+                    <p>Comment on joue, la nuit repensée, local, en ligne, démo.</p>
+                    <p class="plan-time">~12 min</p>
+                </div>
+                <div class="tile plan-tile">
+                    <div class="tile-icon" style="color:#fbbf24;"><i class="fa-solid fa-gears"></i></div>
+                    <h3>3 · Les ingrédients</h3>
+                    <p>Go, React, WebSocket, auth, audio, infra — pour le cours.</p>
+                    <p class="plan-time">~8 min + questions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 · Rupture CONTENANT -->
+    <div class="slide-container section-break contenant" data-act="Le contenant">
+        <p class="act-num">Partie 1</p>
+        <h1>Le contenant</h1>
+        <p class="act-tagline">Le cadre : de quoi il s'agit et pourquoi ça existe — avant d'ouvrir le jeu.</p>
+    </div>
+
+    <!-- 5 · C'est quoi -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenant">Le contenant</span>
+            <span class="header-page">5 / 25</span>
+        </div>
+        <h2 class="slide-title">Wendigo, en trois mots</h2>
+        <div class="content-area">
+            <div class="tiled-content" style="margin-bottom: 28px;">
+                <div class="tile" style="text-align:center;">
+                    <div class="tile-icon" style="color:#f87171;"><i class="fa-solid fa-masks-theater"></i></div>
+                    <h3>Un jeu</h3>
+                    <p>Loup-Garou : villageois vs Wendigos, mensonges, votes, éliminations.</p>
+                </div>
+                <div class="tile" style="text-align:center;">
+                    <div class="tile-icon" style="color:#38bdf8;"><i class="fa-solid fa-laptop"></i></div>
+                    <h3>Une app web</h3>
+                    <p>Salon, phases, minuteries, pouvoirs — tout est synchronisé.</p>
+                </div>
+                <div class="tile" style="text-align:center;">
+                    <div class="tile-icon" style="color:#10b981;"><i class="fa-solid fa-user-check"></i></div>
+                    <h3>Zéro MJ</h3>
+                    <p>Personne ne reste de côté pour gérer la nuit.</p>
+                </div>
+            </div>
+            <p class="big-idea">Le <em>jeu</em> reste autour de la table. Le <em>programme</em> fait le travail ingrat.</p>
+        </div>
+    </div>
+
+    <!-- 6 · Problème -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenant">Le contenant</span>
+            <span class="header-page">6 / 25</span>
+        </div>
+        <h2 class="slide-title">Le problème du Loup-Garou classique</h2>
+        <div class="content-area bullet-list">
+            <ul>
+                <li><strong>Un ami devient Maître du Jeu</strong> — il réveille les joueurs la nuit, surveille, applique les règles… il ne joue plus vraiment.</li>
+                <li><strong>La nuit est fragile</strong> — yeux fermés, triche possible, disputes « tu as regardé ».</li>
+                <li><strong>Organiser une partie fatigue</strong> — règles mal appliquées, ambiance qui retombe.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 7 · Promesse -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenant">Le contenant</span>
+            <span class="header-page">7 / 25</span>
+        </div>
+        <h2 class="slide-title">Notre promesse</h2>
+        <div class="content-area">
+            <p class="big-idea" style="margin-bottom: 36px;">Tout le monde <em>joue</em>. Le serveur <em>arbitre</em>.</p>
+            <div class="bullet-list">
+                <ul>
+                    <li>On a abandonné les <strong>vibrations</strong> (on entend qui a une action → injuste).</li>
+                    <li>La nuit se joue les <strong>yeux ouverts</strong>, sur l'écran, en même temps pour tous.</li>
+                    <li>Deux façons de jouer : <strong>local</strong> (MVP prêt) et <strong>en ligne</strong> (en cours).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8 · Rupture CONTENU -->
+    <div class="slide-container section-break contenu" data-act="Le contenu">
+        <p class="act-num">Partie 2</p>
+        <h1>Le contenu</h1>
+        <p class="act-tagline">Le plat : comment une partie se déroule et ce que vous allez voir en démo.</p>
+    </div>
+
+    <!-- 9 · Déroulé -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">9 / 25</span>
+        </div>
+        <h2 class="slide-title">Une partie, c'est une boucle</h2>
+        <p class="slide-lead">Le serveur enchaîne les phases — vous discutez, accusez, votez, survivez.</p>
+        <div class="content-area">
+            <div class="phase-chain">
+                <div class="phase-box"><i class="fa-solid fa-sun" style="color:#fbbf24;"></i><span>Jour</span></div>
+                <span class="phase-arrow">→</span>
+                <div class="phase-box"><i class="fa-solid fa-gavel"></i><span>Conseil</span></div>
+                <span class="phase-arrow">→</span>
+                <div class="phase-box"><i class="fa-solid fa-fire"></i><span>Bûcher</span></div>
+                <span class="phase-arrow">→</span>
+                <div class="phase-box"><i class="fa-solid fa-moon"></i><span>Nuit</span></div>
+                <span class="phase-arrow">→</span>
+                <div class="phase-box"><i class="fa-solid fa-cloud-sun"></i><span>Matin</span></div>
+            </div>
+            <p style="text-align:center;margin-top:28px;font-size:19px;color:#94a3b8;">Puis on recommence — jusqu'à ce qu'une équipe gagne.</p>
+        </div>
+    </div>
+
+    <!-- 10 · Nuit -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">10 / 25</span>
+        </div>
+        <h2 class="slide-title">La nuit, repensée</h2>
+        <div class="content-area two-column align-top">
+            <div class="bullet-list">
+                <ul>
+                    <li>Chaque joueur <strong>choisit une cible</strong> (tuer, inspecter, autre pouvoir…).</li>
+                    <li>Pas de pouvoir utile ? Tu <strong>prie</strong> pour protéger quelqu'un.</li>
+                    <li><strong>Majorité des prières</strong> sur un joueur → il ne meurt pas des Wendigos cette nuit.</li>
+                </ul>
+                <p style="margin-top:20px;font-size:18px;color:#64748b;">Résultat : tout le monde agit — personne ne peut dire « lui, il a bougé ».</p>
+            </div>
+            <div class="image-wrapper" style="height:340px;">
+                <img alt="Phase de nuit" src="./images/night.png">
+            </div>
+        </div>
+    </div>
+
+    <!-- 11 · Local -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">11 / 25</span>
+        </div>
+        <h2 class="slide-title">Mode local — autour de la table</h2>
+        <div class="content-area two-column">
+            <div>
+                <p class="slide-lead" style="margin-bottom:20px;">Même pièce, chacun sur son téléphone. On parle encore en vrai.</p>
+                <div class="bullet-list">
+                    <ul>
+                        <li>Le numérique gère rôles, timers et votes.</li>
+                        <li>L'ambiance reste celle d'une soirée entre amis.</li>
+                        <li><strong>C'est le mode déjà jouable aujourd'hui.</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="image-wrapper" style="height:360px;">
+                <img alt="Tour de feu" src="./images/tour-de-feu.png">
+            </div>
+        </div>
+    </div>
+
+    <!-- 12 · En ligne -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">12 / 25</span>
+        </div>
+        <h2 class="slide-title">Mode en ligne — la vision</h2>
+        <div class="content-area two-column">
+            <div class="image-wrapper image-contain" style="height:360px;">
+                <img alt="Lobby" src="./images/online.gif">
+            </div>
+            <div class="bullet-list">
+                <ul>
+                    <li>Maison en <strong>2D</strong> : tu te déplaces de pièce en pièce.</li>
+                    <li><strong>Un canal audio par pièce</strong> — comme se mettre à l'écart le jour, mais à distance.</li>
+                    <li>Même règles, même serveur — expérience sociale numérique.</li>
+                </ul>
+                <div class="pill-row">
+                    <span class="pill" style="border-color:#fbbf24;color:#fcd34d;">En développement</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13 · Démo -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">13 / 25</span>
+        </div>
+        <h2 class="slide-title">Démonstration</h2>
+        <p class="slide-lead">Je vous montre le produit — pas seulement des slides.</p>
+        <a href="https://localhost:5173" target="_blank" rel="noopener noreferrer" class="brand-title brand-title--demo" title="Ouvrir l'application WendiGo">
+            Wendi<i class="fa-brands fa-golang go-icon" aria-hidden="true"></i>
+        </a>
+        <div class="content-area">
+            <ol class="demo-steps">
+                <li>Lancer la stack (<code style="color:#34d399;">task up</code>)</li>
+                <li>Se connecter et créer un salon</li>
+                <li>Lancer une partie à plusieurs</li>
+                <li>Enchaîner jour → vote → nuit → matin</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- 14 · Avancement -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section contenu">Le contenu</span>
+            <span class="header-page">14 / 25</span>
+        </div>
+        <h2 class="slide-title">Où on en est</h2>
+        <div class="content-area">
+            <table>
+                <thead><tr><th>Quoi</th><th>Statut</th></tr></thead>
+                <tbody>
+                    <tr><td>Partie complète en local</td><td style="color:#10b981;">✅ Jouable</td></tr>
+                    <tr><td>Auth + voix (LiveKit)</td><td style="color:#10b981;">✅ Intégrés</td></tr>
+                    <tr><td>Lobby 2D en ligne</td><td style="color:#fbbf24;">🔄 En cours</td></tr>
+                    <tr><td>Déploiement cloud public</td><td style="color:#94a3b8;">⏳ À venir</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 15 · Rupture INGRÉDIENTS -->
+    <div class="slide-container section-break ingredients" data-act="Les ingrédients">
+        <p class="act-num">Partie 3</p>
+        <h1>Les ingrédients</h1>
+        <p class="act-tagline">Sous le capot : ce qu'on a utilisé pour construire Wendigo — le volet cours.</p>
+    </div>
+
+    <!-- 16 · Architecture -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">16 / 25</span>
+        </div>
+        <h2 class="slide-title">Qui fait quoi ?</h2>
+        <p class="slide-lead" style="margin-bottom: 16px;">Trois rôles simples — le téléphone n'est pas le patron du jeu.</p>
+        <div class="content-area" style="justify-content: flex-start;">
+            <p class="arch-message">Le <em>serveur</em> est le juge. Les téléphones ne font que montrer et cliquer.</p>
+            <div class="arch-flow">
+                <div class="arch-node">
+                    <i class="fa-solid fa-mobile-screen" style="color:#38bdf8;"></i>
+                    <h3>Ton téléphone</h3>
+                    <p>Boutons, timer, phase du jour ou de la nuit</p>
+                    <span class="tech-tag">React</span>
+                </div>
+                <div class="arch-arrow">
+                    <span>actions</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>écran à jour</span>
+                    <i class="fa-solid fa-arrow-left" style="margin-top:6px;"></i>
+                </div>
+                <div class="arch-node highlight">
+                    <i class="fa-brands fa-golang" style="color:#00add8;"></i>
+                    <h3>Le serveur</h3>
+                    <p>Applique les règles, synchronise tout le monde</p>
+                    <span class="tech-tag">Go + WebSocket</span>
+                </div>
+                <div class="arch-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>sauvegarde</span>
+                </div>
+                <div class="arch-node">
+                    <i class="fa-solid fa-database" style="color:#a78bfa;"></i>
+                    <h3>La mémoire</h3>
+                    <p>Salons, joueurs, état de la partie</p>
+                    <span class="tech-tag">PostgreSQL</span>
+                </div>
+            </div>
+            <div class="arch-extras">
+                <div class="arch-extra">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div><strong>Connexion</strong><span>Authentik — savoir qui tu es</span></div>
+                </div>
+                <div class="arch-extra">
+                    <i class="fa-solid fa-headphones"></i>
+                    <div><strong>Voix</strong><span>LiveKit — pour le mode en ligne</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 17 · Backend -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">17 / 25</span>
+        </div>
+        <h2 class="slide-title">Le serveur — écrit en Go</h2>
+        <p class="slide-lead" style="margin-bottom: 14px;">Le bloc du milieu de la diapo précédente : c'est lui le <strong style="color:#f1f5f9;">Maître du Jeu automatique</strong>.</p>
+        <div class="content-area" style="justify-content: flex-start;">
+            <div class="backend-hero">
+                <i class="fa-brands fa-golang"></i>
+                <p>Il reçoit tes clics, applique les règles, puis renvoie la même vérité à <strong>tous</strong> les téléphones — en même temps.</p>
+            </div>
+            <div class="backend-grid">
+                <div class="backend-card">
+                    <span class="card-num">01</span>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <p class="plain">Il fait avancer la partie</p>
+                    <h3>Enchaîne les phases</h3>
+                    <p>Salon → jour → conseil → bûcher → nuit → matin… jusqu'à la victoire.</p>
+                    <p class="tech-line">Codé comme une <code>machine à états</code></p>
+                </div>
+                <div class="backend-card">
+                    <span class="card-num">02</span>
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <p class="plain">Personne n'est en retard</p>
+                    <h3>Diffuse l'état</h3>
+                    <p>Quand la nuit tombe chez toi, elle tombe pour tout le monde à la même seconde.</p>
+                    <p class="tech-line">Canal temps réel : <code>WebSocket</code></p>
+                </div>
+                <div class="backend-card">
+                    <span class="card-num">03</span>
+                    <i class="fa-solid fa-flask"></i>
+                    <p class="plain">On ne casse pas le jeu par accident</p>
+                    <h3>Teste les règles</h3>
+                    <p>Des scénarios rejouent votes, prières et morts de Wendigos avant chaque livraison.</p>
+                    <p class="tech-line">Tests Go sur la <code>boucle de jeu</code></p>
+                </div>
+            </div>
+            <div class="phase-strip">
+                <span class="phase-strip-label">Exemple de fil conducteur côté serveur :</span>
+                <span class="phase-chip">Salon</span>
+                <span class="phase-chip">Jour</span>
+                <span class="phase-chip">Conseil</span>
+                <span class="phase-chip">Bûcher</span>
+                <span class="phase-chip active">Nuit</span>
+                <span class="phase-chip">Matin</span>
+                <span class="phase-chip">→ on recommence</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 18 · Frontend -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">18 / 25</span>
+        </div>
+        <h2 class="slide-title">L'écran — écrit en React</h2>
+        <p class="slide-lead" style="margin-bottom: 14px;">Le bloc de gauche de la diapo 16 : il <strong style="color:#f1f5f9;">affiche</strong> et envoie tes actions — il ne décide pas.</p>
+        <div class="content-area" style="justify-content: flex-start;">
+            <div class="frontend-hero">
+                <i class="fa-brands fa-react"></i>
+                <p>Tu vois la phase, les boutons, le chrono. Tu cliques. Le serveur tranche — <strong>pas ton navigateur</strong>.</p>
+            </div>
+            <div class="backend-grid">
+                <div class="backend-card frontend-card">
+                    <span class="card-num">01</span>
+                    <i class="fa-solid fa-gamepad"></i>
+                    <p class="plain">Tout ce que tu vois en partie</p>
+                    <h3>Interface de jeu</h3>
+                    <p>Salon, votes, nuit, matin — écrans clairs sur téléphone ou PC.</p>
+                    <p class="tech-line"><code>React</code> + TypeScript + Tailwind</p>
+                </div>
+                <div class="backend-card frontend-card">
+                    <span class="card-num">02</span>
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <p class="plain">Il suit le serveur</p>
+                    <h3>Mise à jour live</h3>
+                    <p>Quand le serveur dit « c'est la nuit », ton écran change — sans recharger la page.</p>
+                    <p class="tech-line">Client <code>WebSocket</code></p>
+                </div>
+                <div class="backend-card frontend-card">
+                    <span class="card-num">03</span>
+                    <i class="fa-solid fa-map"></i>
+                    <p class="plain">Pour le futur mode en ligne</p>
+                    <h3>Monde 2D à part</h3>
+                    <p>Déplacement entre pièces : moteur Canvas séparé des menus — fluide à 60 images/s.</p>
+                    <p class="tech-line"><code>Canvas</code> + <code>useRef</code>, pas <code>useState</code> en boucle</p>
+                </div>
+            </div>
+            <div class="frontend-split">
+                <div class="frontend-split-box ui">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <div>
+                        <strong>Menus & phases</strong>
+                        <span>React — classique, réactif</span>
+                    </div>
+                </div>
+                <div class="frontend-split-box world">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <div>
+                        <strong>Maison 2D</strong>
+                        <span>Canvas — comme un mini jeu vidéo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 19 · Auth & Audio -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="headerVerdict rapide-page">19 / 25</span>
+        </div>
+        <h2 class="slide-title">Connexion & voix</h2>
+        <div class="content-area tiled-content">
+            <div class="tile">
+                <div class="tile-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Authentik (OIDC)</h3>
+                <p>Connexion sécurisée standard — plus de login maison fragile.</p>
+            </div>
+            <div class="tile">
+                <div class="tile-icon"><i class="fa-solid fa-headphones"></i></div>
+                <h3>LiveKit (WebRTC)</h3>
+                <p>Audio temps réel, spatialisé — pour le futur multijoueur à distance.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 20 · Infra -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">20 / 25</span>
+        </div>
+        <h2 class="slide-title">Infra & fiabilité</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <h3 style="font-size:20px;color:#fbbf24;margin-bottom:8px;">Docker Compose</h3>
+                    <p>Toute la stack en une commande.</p>
+                </div>
+                <div class="tile">
+                    <h3 style="font-size:20px;color:#fbbf24;margin-bottom:8px;">Pulumi + Nix</h3>
+                    <p>Infra et environnement reproductibles.</p>
+                </div>
+                <div class="tile">
+                    <h3 style="font-size:20px;color:#fbbf24;margin-bottom:8px;">Prometheus / Grafana</h3>
+                    <p>Métriques et logs — voir si le serveur souffre.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 21 · Galère -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">21 / 25</span>
+        </div>
+        <h2 class="slide-title">Ce qui m'a cassé la tête</h2>
+        <div class="content-area bullet-list">
+            <ul>
+                <li><strong>Synchroniser</strong> 8 téléphones sur la même phase — sans décalage.</li>
+                <li><strong>Règles de nuit</strong> complexes (votes Wendigos, prières, immunité).</li>
+                <li><strong>Migration auth</strong> vers OIDC — beaucoup de fichiers touchés.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 22 · Verdict -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section ingredients">Les ingrédients</span>
+            <span class="header-page">22 / 25</span>
+        </div>
+        <h2 class="slide-title">On referait quoi ?</h2>
+        <p class="slide-lead" style="margin-bottom: 18px;">Bilan honnête après le projet — pas de pub, juste ce qui a vraiment marché.</p>
+        <div class="content-area" style="justify-content: flex-start;">
+            <div class="verdict-grid">
+                <div class="verdict-card positive">
+                    <div class="verdict-top">
+                        <div class="verdict-brand">
+                            <i class="fa-brands fa-golang" style="color:#00add8;"></i>
+                            <strong>Go</strong>
+                        </div>
+                        <span class="verdict-badge">✓ OUI</span>
+                    </div>
+                    <p class="verdict-verdict">Léger — moins cher sur un VPS</p>
+                    <p class="verdict-why">Peu de RAM et de CPU pour faire tourner le serveur du jeu : idéal si je loue une petite machine.</p>
+                </div>
+                <div class="verdict-card mixed">
+                    <div class="verdict-top">
+                        <div class="verdict-brand">
+                            <i class="fa-brands fa-react" style="color:#61dafb;"></i>
+                            <strong>React</strong>
+                        </div>
+                        <span class="verdict-badge">◐ MITIGÉ</span>
+                    </div>
+                    <p class="verdict-verdict">Oui pour les écrans, non pour le 2D</p>
+                    <p class="verdict-why">Parfait pour salon, votes, nuit. Le déplacement 60 FPS → Canvas à part.</p>
+                </div>
+                <div class="verdict-card positive">
+                    <div class="verdict-top">
+                        <div class="verdict-brand">
+                            <i class="fa-solid fa-headphones" style="color:#38bdf8;"></i>
+                            <strong>LiveKit</strong>
+                        </div>
+                        <span class="verdict-badge">✓ OUI</span>
+                    </div>
+                    <p class="verdict-verdict">Vocal pro sans tout inventer</p>
+                    <p class="verdict-why">WebRTC est dur ; LiveKit nous a fait gagner des semaines.</p>
+                </div>
+                <div class="verdict-card heavy">
+                    <div class="verdict-top">
+                        <div class="verdict-brand">
+                            <i class="fa-solid fa-layer-group" style="color:#f97316;"></i>
+                            <strong>Authentik & Grafana + Pulumi</strong>
+                        </div>
+                        <span class="verdict-badge">⚖ LOURD</span>
+                    </div>
+                    <p class="verdict-verdict">Solide, mais ça été beaucoup d'apprentissage et de documentation. IaC</p>
+                    <p class="verdict-why">Excellent pour apprendre l'ops — overkill pour un projet solo comme le mien.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 23 · Bilan solo -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section fin">Bilan</span>
+            <span class="header-page">23 / 25</span>
+        </div>
+        <h2 class="slide-title">Projet solo — ce que j'en retiens</h2>
+        <p class="slide-lead" style="margin-bottom: 14px;">Un seul développeur : design du jeu, code, infra — pas d'équipe derrière.</p>
+        <div class="content-area" style="justify-content: flex-start;">
+            <p class="solo-banner"><strong>Fierté :</strong> un Loup-Garou qui tourne vraiment en local &nbsp;·&nbsp; <strong>Lucidité :</strong> le 2D en ligne et le cloud, c'est pour plus tard</p>
+            <div class="solo-takeaway">
+                <div class="solo-row">
+                    <i class="fa-solid fa-scissors"></i>
+                    <div>
+                        <strong>Savoir couper</strong>
+                        <p>MVP jouable autour de la table d'abord — pas attendre que tout soit parfait (lobby 2D, prod, polish).</p>
+                    </div>
+                </div>
+                <div class="solo-row">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <div>
+                        <strong>Une fausse piste qui m'a appris</strong>
+                        <p>Les vibrations la nuit → abandonnées. La nuit les yeux ouverts est venue en <em>testant</em> l'idée, pas en lisant un tuto.</p>
+                    </div>
+                </div>
+                <div class="solo-row">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <div>
+                        <strong>Tout seul = choix réalistes</strong>
+                        <p>Go pour un serveur pas cher à louer, React pour l'UI, stack lourde (Authentik, Pulumi)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 24 · Sources -->
+    <div class="slide-container slide-sources">
+        <div class="slide-header">
+            <span class="header-section fin">Fin</span>
+            <span class="header-page">24 / 25</span>
+        </div>
+        <h2 class="slide-title">Où je me suis documenté</h2>
+        <p class="slide-lead">Consulté pour Wendigo — par thème.</p>
+        <div class="content-area" style="justify-content: flex-start; overflow: hidden;">
+            <div class="sources-layout">
+                <div class="sources-row">
+                    <div class="source-group">
+                        <h3><i class="fa-brands fa-golang" style="color:#00add8;"></i> Go</h3>
+                        <ul class="source-entries">
+                            <li class="source-entry">
+                                <span class="source-entry-label">Learn Go</span>
+                                <a href="https://learnxinyminutes.com/docs/go/" target="_blank" rel="noopener">learnxinyminutes.com/docs/go</a>
+                            </li>
+                            <li class="source-entry">
+                                <span class="source-entry-label">WebSocket & serveur</span>
+                                <a href="https://go.dev/doc/" target="_blank" rel="noopener">go.dev/doc</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="source-group">
+                        <h3><i class="fa-brands fa-react" style="color:#61dafb;"></i> React</h3>
+                        <ul class="source-entries">
+                            <li class="source-entry">
+                                <span class="source-entry-label">Interface UI</span>
+                                <a href="https://react.dev/" target="_blank" rel="noopener">react.dev</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="source-group">
+                        <h3><i class="fa-solid fa-headphones" style="color:#38bdf8;"></i> LiveKit</h3>
+                        <ul class="source-entries">
+                            <li class="source-entry">
+                                <span class="source-entry-label">Audio temps réel</span>
+                                <a href="https://docs.livekit.io/" target="_blank" rel="noopener">docs.livekit.io</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="source-group wide">
+                    <h3><i class="fa-solid fa-server"></i> Infra & observabilité</h3>
+                    <ul class="source-entries grid-2">
+                        <li class="source-entry">
+                            <span class="source-entry-label">Nix</span>
+                            <a href="https://nixos.org/manual/nix/stable/" target="_blank" rel="noopener">nixos.org/manual/nix</a>
+                        </li>
+                        <li class="source-entry">
+                            <span class="source-entry-label">Pulumi (IaC)</span>
+                            <a href="https://www.pulumi.com/docs/" target="_blank" rel="noopener">pulumi.com/docs</a>
+                        </li>
+                        <li class="source-entry">
+                            <span class="source-entry-label">Authentik</span>
+                            <a href="https://docs.goauthentik.io/" target="_blank" rel="noopener">docs.goauthentik.io</a>
+                        </li>
+                        <li class="source-entry">
+                            <span class="source-entry-label">Grafana</span>
+                            <a href="https://grafana.com/docs/" target="_blank" rel="noopener">grafana.com/docs</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 25 · Questions -->
+    <div class="slide-container">
+        <div class="slide-header">
+            <span class="header-section fin">Fin</span>
+            <span class="header-page">25 / 25</span>
+        </div>
+        <div class="content-area">
+            <div class="qa-layout">
+                <h2>Questions ?</h2>
+                <p>Merci — et bonne partie.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="presentationTimer" class="presentation-timer" aria-label="Chronomètre de présentation">
+    <span id="timerDisplay" class="timer-display">00:00</span>
+    <button type="button" class="timer-btn" id="timerToggle" title="Démarrer (R pour reset)">
+        <i class="fa-solid fa-play" id="timerToggleIcon"></i>
+    </button>
+    <button type="button" class="timer-btn timer-btn-reset" id="timerReset" title="Remettre à zéro">
+        <i class="fa-solid fa-rotate-left"></i>
+    </button>
+</div>
+
+<div class="controls">
+    <button class="control-btn" id="prevBtn" title="Précédent"><i class="fa-solid fa-chevron-left"></i></button>
+    <div>
+        <div class="slide-counter" id="slideCounter">1 / 25</div>
+        <div id="actHint"></div>
+    </div>
+    <button class="control-btn" id="nextBtn" title="Suivant"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll('.slide-container');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const actHint = document.getElementById('actHint');
+        let currentSlide = 0;
+
+        function updateSlider() {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+            slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+            const act = slides[currentSlide].dataset.act;
+            actHint.textContent = act ? `▸ ${act}` : '';
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function goNext() {
+            if (currentSlide < slides.length - 1) { currentSlide++; updateSlider(); }
+        }
+        function goPrev() {
+            if (currentSlide > 0) { currentSlide--; updateSlider(); }
+        }
+
+        nextBtn.addEventListener('click', goNext);
+        prevBtn.addEventListener('click', goPrev);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+            else if (e.key === 'ArrowLeft') goPrev();
+            else if (e.key === 'r' || e.key === 'R') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) resetTimer();
+            }
+        });
+        updateSlider();
+
+        // Chronomètre (reste visible sur toutes les diapos)
+        const timerEl = document.getElementById('presentationTimer');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerToggle = document.getElementById('timerToggle');
+        const timerToggleIcon = document.getElementById('timerToggleIcon');
+        const timerResetBtn = document.getElementById('timerReset');
+        let timerRunning = false;
+        let timerStartedAt = 0;
+        let timerElapsedMs = 0;
+        let timerIntervalId = null;
+
+        function formatTimer(ms) {
+            const totalSec = Math.max(0, Math.floor(ms / 1000));
+            const m = Math.floor(totalSec / 60);
+            const s = totalSec % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function currentTimerMs() {
+            return timerElapsedMs + (timerRunning ? Date.now() - timerStartedAt : 0);
+        }
+
+        function refreshTimerDisplay() {
+            timerDisplay.textContent = formatTimer(currentTimerMs());
+        }
+
+        function setTimerUi() {
+            timerEl.classList.toggle('running', timerRunning);
+            timerToggleIcon.className = timerRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+            timerToggle.title = timerRunning ? 'Pause' : 'Démarrer';
+        }
+
+        function startTimer() {
+            if (timerRunning) return;
+            timerStartedAt = Date.now();
+            timerRunning = true;
+            timerIntervalId = setInterval(refreshTimerDisplay, 200);
+            setTimerUi();
+            refreshTimerDisplay();
+        }
+
+        function pauseTimer() {
+            if (!timerRunning) return;
+            timerElapsedMs += Date.now() - timerStartedAt;
+            timerRunning = false;
+            clearInterval(timerIntervalId);
+            timerIntervalId = null;
+            setTimerUi();
+            refreshTimerDisplay();
+        }
+
+        function toggleTimer() {
+            if (timerRunning) pauseTimer();
+            else startTimer();
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerElapsedMs = 0;
+            refreshTimerDisplay();
+        }
+
+        timerToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleTimer();
+        });
+        timerResetBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetTimer();
+        });
+        refreshTimerDisplay();
+    });
+</script>
+</body>
+</html>
