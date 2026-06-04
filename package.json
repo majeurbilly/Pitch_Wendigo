@@ -1,0 +1,11 @@
+{
+  "name": "pitch-wendigo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pdf": "node scripts/generate-pdf.mjs"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.10.0"
+  }
+}

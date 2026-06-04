@@ -1,0 +1,55 @@
+name: Générer le PDF et publier en Release
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-pdf
+  cancel-in-progress: true
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Générer le PDF
+        run: npm run pdf
+
+      - name: Définir le tag de release
+        id: release
+        run: |
+          TAG="pdf-$(date -u +'%Y.%m.%d')-${{ github.run_number }}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "name=Présentation WendiGo — $(date -u +'%d/%m/%Y')" >> "$GITHUB_OUTPUT"
+
+      - name: Publier sur GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release.outputs.tag }}
+          name: ${{ steps.release.outputs.name }}
+          files: dist/WendiGo-Presentation.pdf
+          generate_release_notes: true
+          make_latest: true
+
+      - name: Conserver l'artefact Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: WendiGo-Presentation
+          path: dist/WendiGo-Presentation.pdf
+          retention-days: 30
